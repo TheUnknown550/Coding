@@ -11,5 +11,5 @@ if (rem == 0){
     console.log("YOur number is a Even number.");
 }
 else if(rem == 1){
-    console.log("your number is an Odd number.")
+    console.log("your number is an Odd number.");
 }
