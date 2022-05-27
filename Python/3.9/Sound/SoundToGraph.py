@@ -5,8 +5,9 @@ import wave, sys
  
 # shows the sound waves
 def visualize(path: str):
-   
-    counter =0 
+    RecTime = []
+    RecAmp = []
+    countTime =0 
     # reading the audio file
     raw = wave.open(path)
      
@@ -14,10 +15,7 @@ def visualize(path: str):
     # -1 indicates all or max frames
     signal = raw.readframes(-1)
     signal = np.frombuffer(signal, dtype ="int16")
-    for i in range (len(signal)):
-        if signal[i] >= 4000:
-            counter +=1
-            print(counter/4)
+    
     
     
     # gets the frame rate
@@ -34,7 +32,9 @@ def visualize(path: str):
         len(signal) / f_rate,
         num = len(signal)
     )
- 
+
+
+            
     # using matplotlib to plot
     # creates a new figure
     plt.figure(1)

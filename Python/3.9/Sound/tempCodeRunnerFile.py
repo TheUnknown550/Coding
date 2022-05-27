@@ -1,2 +1,2 @@
 
-    
+    plt.xlabel("Time")
