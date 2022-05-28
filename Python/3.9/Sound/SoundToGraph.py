@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import wave, sys
+from scipy.io import wavfile
  
 # shows the sound waves
 def visualize(path: str):
@@ -11,6 +12,7 @@ def visualize(path: str):
     CheckTime= []
     TimeLen = 0
     counter = 0
+    counters = 0
     # reading the audio file
     raw = wave.open(path)
      
@@ -36,22 +38,26 @@ def visualize(path: str):
         num = len(signal)
     )
     #Note!! play with signal instead of time
-    for i in range (len(signal)):
-        if signal[i] > 4000 and counter == 0:
-            counter = 1
+    for i in range(len(signal)):
+        if signal[i] > 3700 and counter == 0:
             RecTime.append(round(time[i],3))
             RecSig.append(signal[i])
+            counter = 1
 
-        elif signal[i] > 4000:
-            CheckSig.append(signal[i])
-            CheckTime.append(round(time[i],3))
-            TimeLen = len(CheckTime)
-
-        if signal[i] < 4000 and counter == 1:
+        elif signal[i] < 3700 and counter == 1: 
             counter = 0
-            CheckTime.clear()
-            CheckSig.clear()
 
+        if signal[i] > -2850 and counters == 0:
+            RecTime.append(round(time[i],3))
+            RecSig.append(signal[i])
+            counters = 1
+
+        elif signal[i] < -2850 and counters == 1: 
+            counters = 0
+
+        if signal[i] == 0:
+            RecTime.append(round(time[i],3))
+            RecSig.append(signal[i])
 
     print(RecTime)
     print(len(RecTime))
@@ -68,12 +74,12 @@ def visualize(path: str):
     plt.xlabel("Time")
     
     # actual plotting
-    plt.plot(time, signal)
-     
+    #plt.plot(time, signal)
+    plt.plot(RecTime, RecSig)
     # shows the plot
     # in new window
     plt.show()
- 
+    wavfile.write("Python/OutPutFiles/FreqTest.wav",44100,RecSig)
     # you can also save
     # the plot using
     # plt.savefig('filename')
