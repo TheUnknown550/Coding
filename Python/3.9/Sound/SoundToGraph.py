@@ -6,8 +6,11 @@ import wave, sys
 # shows the sound waves
 def visualize(path: str):
     RecTime = []
-    RecAmp = []
-    countTime =0 
+    RecSig = []
+    CheckSig= []
+    CheckTime= []
+    TimeLen = 0
+    counter = 0
     # reading the audio file
     raw = wave.open(path)
      
@@ -32,9 +35,28 @@ def visualize(path: str):
         len(signal) / f_rate,
         num = len(signal)
     )
+    #Note!! play with signal instead of time
+    for i in range (len(signal)):
+        if signal[i] > 4000 and counter == 0:
+            counter = 1
+            RecTime.append(round(time[i],3))
+            RecSig.append(signal[i])
+
+        elif signal[i] > 4000:
+            CheckSig.append(signal[i])
+            CheckTime.append(round(time[i],3))
+            TimeLen = len(CheckTime)
+
+        if signal[i] < 4000 and counter == 1:
+            counter = 0
+            CheckTime.clear()
+            CheckSig.clear()
 
 
-            
+    print(RecTime)
+    print(len(RecTime))
+    print(RecSig)
+    print(len(RecSig))
     # using matplotlib to plot
     # creates a new figure
     plt.figure(1)
@@ -56,7 +78,7 @@ def visualize(path: str):
     # the plot using
     # plt.savefig('filename')
  
- 
+
 if __name__ == "__main__":
    
     # gets the command line Value
