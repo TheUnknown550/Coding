@@ -79,7 +79,7 @@ def visualize(path: str):
     # shows the plot
     # in new window
     plt.show()
-    wavfile.write("Python/OutPutFiles/FreqTest.wav",44100,RecSig)
+    wavfile.write("Python/OutPutFiles/FreqTest.wav",RecTime,RecSig)
     # you can also save
     # the plot using
     # plt.savefig('filename')
