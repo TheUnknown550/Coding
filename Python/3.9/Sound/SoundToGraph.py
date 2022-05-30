@@ -12,12 +12,12 @@ def visualize(path: str):
     CheckTimeHigh= []
     CheckTimeLow= []
     CheckSigLow= []
-    TimeLen = 0
     counter = 0
     counters = 0
-    SigHighPoint = 0
     TimeHighPoint = 0
     SumTimeHighPoint = 0
+    TimeHighMax = 0
+    TimeHighMin = 0
     # reading the audio file
     raw = wave.open(path)
      
@@ -51,21 +51,74 @@ def visualize(path: str):
             if counter == 0:
                 counter = 1
             
-
+        
         if signal[i] < 2750 and counter == 1:
+            #Way 1 use Time Avg per each graph
             for n in range (len(CheckTimeHigh)):
                 SumTimeHighPoint = SumTimeHighPoint + CheckTimeHigh[n]
-            SigHighPoint = CheckSigHigh[int(len(CheckSigHigh)/2)]
             TimeHighPoint = SumTimeHighPoint/int(len(CheckTimeHigh))
             SumTimeHighPoint = 0
-            CheckSigHigh.clear()
-            CheckTimeHigh.clear()
-            RecTime.append(SigHighPoint)
-            RecSig.append(TimeHighPoint)
+
+            #Way 2 use (highest + min) /2
+            '''CheckTimeHigh.sort(reverse=True)
+            TimeHighMax = CheckTimeHigh[0]
+            TimeHighMin = CheckTimeHigh[int(len(CheckTimeHigh))-1]
+            TimeHighPoint = (TimeHighMax + TimeHighMin) / 2'''
+
+            #Both Works Well
+
+            #Find Highest Point of signal
+            CheckSigHigh.sort(reverse=True)
+
+            #Add the highest variables to list
+            RecTime.append(TimeHighPoint)
+            RecSig.append(CheckSigHigh[0])
+
+            #Resets variables for later use
             TimeHighPoint = 0
             counter = 0
+            
+            #Clear list for later use
+            CheckSigHigh.clear()
+            CheckTimeHigh.clear()
 
 
+
+        if signal [i] < -2600:
+            CheckSigLow.append(signal[i])
+            CheckTimeLow.append(round(time[i],3))
+            if counter == 0:
+                counter = 1
+
+        if signal[i] < 2750 and counter == 1:
+            #Way 1 use Time Avg per each graph
+            for n in range (len(CheckTimeHigh)):
+                SumTimeHighPoint = SumTimeHighPoint + CheckTimeHigh[n]
+            TimeLowPoint = SumTimeHighPoint/int(len(CheckTimeHigh))
+            SumTimeHighPoint = 0
+
+            #Way 2 use (highest + min) /2
+            '''CheckTimeHigh.sort(reverse=True)
+            TimeHighMax = CheckTimeHigh[0]
+            TimeHighMin = CheckTimeHigh[int(len(CheckTimeHigh))-1]
+            TimeHighPoint = (TimeHighMax + TimeHighMin) / 2'''
+
+            #Both Works Well
+
+            #Find Highest Point of signal
+            CheckSigLow.sort(reverse=True)
+
+            #Add the highest variables to list
+            RecTime.append(TimeLowPoint)
+            RecSig.append(CheckSigLow[0])
+
+            #Resets variables for later use
+            TimeHighPoint = 0
+            counter = 0
+            
+            #Clear list for later use
+            CheckSigHigh.clear()
+            CheckTimeHigh.clear()
 
         if signal[i] > -2600 and counters == 0:
             RecTime.append(round(time[i],3))
