@@ -8,11 +8,16 @@ from scipy.io import wavfile
 def visualize(path: str):
     RecTime = []
     RecSig = []
-    CheckSig= []
-    CheckTime= []
+    CheckSigHigh= []
+    CheckTimeHigh= []
+    CheckTimeLow= []
+    CheckSigLow= []
     TimeLen = 0
     counter = 0
     counters = 0
+    SigHighPoint = 0
+    TimeHighPoint = 0
+    CheckTimeHighPoint = 0
     # reading the audio file
     raw = wave.open(path)
      
@@ -39,30 +44,44 @@ def visualize(path: str):
     )
     #Note!! play with signal instead of time
     for i in range(len(signal)):
-        if signal[i] > 3700 and counter == 0:
-            RecTime.append(round(time[i],3))
-            RecSig.append(signal[i])
-            counter = 1
+        
+        if signal [i] > 2750:
+            CheckSigHigh.append(signal[i])
+            CheckTimeHigh.append(round(time[i],3))
+            
 
-        elif signal[i] < 3700 and counter == 1: 
+        if signal[i] < 2750 and counter == 1:
+            for n in range (len(CheckTimeHigh)):
+                CheckTimeHighPoint += CheckTimeHigh[n]
+            SigHighPoint = CheckSigHigh[int(len(CheckSigHigh)/2)]
+            TimeHighPoint = CheckTimeHighPoint/2
+            CheckSigHigh.clear()
+            CheckTimeHigh.clear()
+            RecTime.append(SigHighPoint)
+            RecSig.append(TimeHighPoint)
             counter = 0
 
-        if signal[i] > -2850 and counters == 0:
+        if signal[i] > 2750 and counter == 0: 
+            counter = 1
+
+
+
+        if signal[i] > -2600 and counters == 0:
             RecTime.append(round(time[i],3))
             RecSig.append(signal[i])
             counters = 1
 
-        elif signal[i] < -2850 and counters == 1: 
+        elif signal[i] < -2600 and counters == 1: 
             counters = 0
 
         if signal[i] == 0:
             RecTime.append(round(time[i],3))
             RecSig.append(signal[i])
 
-    print(RecTime)
+    '''print(RecTime)
     print(len(RecTime))
     print(RecSig)
-    print(len(RecSig))
+    print(len(RecSig))'''
     # using matplotlib to plot
     # creates a new figure
     plt.figure(1)
@@ -74,12 +93,12 @@ def visualize(path: str):
     plt.xlabel("Time")
     
     # actual plotting
-    #plt.plot(time, signal)
+    plt.plot(time, signal)
     plt.plot(RecTime, RecSig)
     # shows the plot
     # in new window
     plt.show()
-    wavfile.write("Python/OutPutFiles/FreqTest.wav",RecTime,RecSig)
+    #wavfile.write("Python/OutPutFiles/SigTest.wav",RecTime,RecSig)
     # you can also save
     # the plot using
     # plt.savefig('filename')

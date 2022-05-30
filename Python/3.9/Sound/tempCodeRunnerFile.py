@@ -1,4 +1,1 @@
-
-    # creates a new figure
-    plt.figure(1)
-     
+0, len, 1.0/sr
