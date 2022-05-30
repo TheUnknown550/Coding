@@ -17,7 +17,7 @@ def visualize(path: str):
     counters = 0
     SigHighPoint = 0
     TimeHighPoint = 0
-    CheckTimeHighPoint = 0
+    SumTimeHighPoint = 0
     # reading the audio file
     raw = wave.open(path)
      
@@ -48,21 +48,22 @@ def visualize(path: str):
         if signal [i] > 2750:
             CheckSigHigh.append(signal[i])
             CheckTimeHigh.append(round(time[i],3))
+            if counter == 0:
+                counter = 1
             
 
         if signal[i] < 2750 and counter == 1:
             for n in range (len(CheckTimeHigh)):
-                CheckTimeHighPoint += CheckTimeHigh[n]
+                SumTimeHighPoint = SumTimeHighPoint + CheckTimeHigh[n]
             SigHighPoint = CheckSigHigh[int(len(CheckSigHigh)/2)]
-            TimeHighPoint = CheckTimeHighPoint/2
+            TimeHighPoint = SumTimeHighPoint/int(len(CheckTimeHigh))
+            SumTimeHighPoint = 0
             CheckSigHigh.clear()
             CheckTimeHigh.clear()
             RecTime.append(SigHighPoint)
             RecSig.append(TimeHighPoint)
+            TimeHighPoint = 0
             counter = 0
-
-        if signal[i] > 2750 and counter == 0: 
-            counter = 1
 
 
 
