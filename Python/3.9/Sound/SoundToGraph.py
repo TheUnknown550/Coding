@@ -6,18 +6,6 @@ from scipy.io import wavfile
  
 # shows the sound waves
 def visualize(path: str):
-    RecTime = []
-    RecSig = []
-    CheckSigHigh= []
-    CheckTimeHigh= []
-    CheckTimeLow= []
-    CheckSigLow= []
-    counter = 0
-    counters = 0
-    TimeHighPoint = 0
-    SumTimeHighPoint = 0
-    TimeHighMax = 0
-    TimeHighMin = 0
     # reading the audio file
     raw = wave.open(path)
      
@@ -42,100 +30,7 @@ def visualize(path: str):
         len(signal) / f_rate,
         num = len(signal)
     )
-    #Note!! play with signal instead of time
-    for i in range(len(signal)):
-        
-        if signal [i] > 2750:
-            CheckSigHigh.append(signal[i])
-            CheckTimeHigh.append(round(time[i],3))
-            if counter == 0:
-                counter = 1
-            
-        
-        if signal[i] < 2750 and counter == 1:
-            #Way 1 use Time Avg per each graph
-            for n in range (len(CheckTimeHigh)):
-                SumTimeHighPoint = SumTimeHighPoint + CheckTimeHigh[n]
-            TimeHighPoint = SumTimeHighPoint/int(len(CheckTimeHigh))
-            SumTimeHighPoint = 0
 
-            #Way 2 use (highest + min) /2
-            '''CheckTimeHigh.sort(reverse=True)
-            TimeHighMax = CheckTimeHigh[0]
-            TimeHighMin = CheckTimeHigh[int(len(CheckTimeHigh))-1]
-            TimeHighPoint = (TimeHighMax + TimeHighMin) / 2'''
-
-            #Both Works Well
-
-            #Find Highest Point of signal
-            CheckSigHigh.sort(reverse=True)
-
-            #Add the highest variables to list
-            RecTime.append(TimeHighPoint)
-            RecSig.append(CheckSigHigh[0])
-
-            #Resets variables for later use
-            TimeHighPoint = 0
-            counter = 0
-            
-            #Clear list for later use
-            CheckSigHigh.clear()
-            CheckTimeHigh.clear()
-
-
-
-        if signal [i] < -2600:
-            CheckSigLow.append(signal[i])
-            CheckTimeLow.append(round(time[i],3))
-            if counter == 0:
-                counter = 1
-
-        if signal[i] < 2750 and counter == 1:
-            #Way 1 use Time Avg per each graph
-            for n in range (len(CheckTimeHigh)):
-                SumTimeHighPoint = SumTimeHighPoint + CheckTimeHigh[n]
-            TimeLowPoint = SumTimeHighPoint/int(len(CheckTimeHigh))
-            SumTimeHighPoint = 0
-
-            #Way 2 use (highest + min) /2
-            '''CheckTimeHigh.sort(reverse=True)
-            TimeHighMax = CheckTimeHigh[0]
-            TimeHighMin = CheckTimeHigh[int(len(CheckTimeHigh))-1]
-            TimeHighPoint = (TimeHighMax + TimeHighMin) / 2'''
-
-            #Both Works Well
-
-            #Find Highest Point of signal
-            CheckSigLow.sort(reverse=True)
-
-            #Add the highest variables to list
-            RecTime.append(TimeLowPoint)
-            RecSig.append(CheckSigLow[0])
-
-            #Resets variables for later use
-            TimeHighPoint = 0
-            counter = 0
-            
-            #Clear list for later use
-            CheckSigHigh.clear()
-            CheckTimeHigh.clear()
-
-        if signal[i] > -2600 and counters == 0:
-            RecTime.append(round(time[i],3))
-            RecSig.append(signal[i])
-            counters = 1
-
-        elif signal[i] < -2600 and counters == 1: 
-            counters = 0
-
-        if signal[i] == 0:
-            RecTime.append(round(time[i],3))
-            RecSig.append(signal[i])
-
-    '''print(RecTime)
-    print(len(RecTime))
-    print(RecSig)
-    print(len(RecSig))'''
     # using matplotlib to plot
     # creates a new figure
     plt.figure(1)
@@ -148,7 +43,6 @@ def visualize(path: str):
     
     # actual plotting
     plt.plot(time, signal)
-    plt.plot(RecTime, RecSig)
     # shows the plot
     # in new window
     plt.show()
@@ -161,6 +55,6 @@ def visualize(path: str):
 if __name__ == "__main__":
    
     # gets the command line Value
-    path = 'D:/Projects/Coding/Python/3.9/Sound/Sounds/a0001.wav'
+    path = 'D:/Projects/Coding/Python/3.9/Sound/Sounds/MattSound2.wav'
  
     visualize(path)
