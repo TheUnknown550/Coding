@@ -9,15 +9,19 @@ FileName = 'D:/Projects/Coding/Python/3.9/Sound/Sounds/File.wav'
 sampleRate, data = scipy.io.wavfile.read(FileName)
 times = np.arange(len(data))/sampleRate
 
-# apply a 3-pole lowpass filter at 0.1x Nyquist frequency
-b, a = scipy.signal.butter(10, 0.1)
-filtered = scipy.signal.filtfilt(b, a, data)
+# create a normalized Hanning window
+windowSize = 300
+window = np.hanning(windowSize)
+window = window / window.sum()
 
-# plot the original data next to the filtered data
+# filter the data using convolution
+filtered = np.convolve(window, data, mode='valid')
 
 
-plt.plot(times, data,  label='Original')
-plt.plot(times, filtered, label='Filtered')
+plt.plot(data, label='Original')
+#plt.plot(times ,filteredLowPass, label='LowFiltered')
+#plt.plot(times, filteredHighPass, label='HighFiltered')
+plt.plot(filtered, label='Filtered')
 
 plt.legend()
 plt.show()
