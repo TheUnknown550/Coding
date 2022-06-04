@@ -1,0 +1,8 @@
+{
+    "version": "2.0.0",
+    "command": "explorer",    
+    "windows": {
+        "command": "C:/Program Files/Google/Chrome/Application/chrome.exe"
+    },
+    "args": ["/D:/Projects/Coding/HTML,CSS/{$fileName}"]
+}

@@ -1,6 +1,6 @@
 {
     "code-runner.executorMap": {
-        "html":"cd $dir && start chrome D:/Projects/Coding/HTML/$fileName",
+        "html":"cd $dir && start chrome D:/Projects/Coding/HTML/{$fileName}",
         "javascript": "node",
         "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
         "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
